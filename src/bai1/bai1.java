@@ -78,9 +78,7 @@ public class bai1 {
 					fis.close();
 					
 					//xuất dữ liệu
-					for (Student st1 : listStudent) {
-						System.out.println(st1.toString());
-					}
+					listStudent.forEach(st1 -> System.out.println(st1.toString()));
 					
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
