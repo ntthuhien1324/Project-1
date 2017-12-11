@@ -33,6 +33,7 @@ public class bai1 {
 
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public bai1() {
 		initialize();
