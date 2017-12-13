@@ -2,14 +2,20 @@ package server;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.List;
 
 import javax.swing.JFrame;
+
+import practice.sv.bai1.ReadFile;
 
 public class bai3_server extends Thread{
 
 	private JFrame frame;
 	private ServerSocket serverSocket;
+	private Socket server;
 
 	/**
 	 * Launch the application.
@@ -32,7 +38,35 @@ public class bai3_server extends Thread{
 	public bai3_server(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
 		//Thiết lập giá trị timeout cho Server Socket đợi một Client
-		serverSocket.setSoTimeout(100000); 
+		serverSocket.setSoTimeout(100000); 		
+	}
+	
+	public void run () {
+		while (true) {
+			try {
+				System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+				server = serverSocket.accept();
+				System.out.println("Just connected to " + server.getRemoteSocketAddress());
+				
+				ObjectInputStream input = new ObjectInputStream(server.getInputStream());
+				List listSt = (List) input.readObject();
+				System.out.println("Receive!");
+				ReadFile.printData(listSt);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					server.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
